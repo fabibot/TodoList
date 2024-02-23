@@ -1,0 +1,153 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/*________________________________________________*/
+
+html{
+    font-size: 62.3%;
+}
+
+
+/* @font-face {
+    font-family: "Delicious Handrawn";
+    font-weight: 400;
+    font-style: normal;
+    src: url('./DeliciousHandrawn-Regular.ttf') format('ttf');
+  } */
+
+h1, h4{
+    font-family: 'peanut', sans-serif;
+}  
+
+h1{
+    font-size: 10rem;
+    font-weight: 700;
+}
+
+
+h3{
+    font-family: "Delicious Handrawn", cursive;
+    font-size: 2.5rem;
+}
+
+h4{
+    font-size: 1.5rem;
+}
+
+header{
+    background-color: rgba(255, 240, 31, 0.5);
+    padding: 10px;
+    height: 105px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px -5px 14px black;
+}
+
+#date{
+    margin: 0px 0px -46px 9px;
+}
+
+.content{
+    padding: 30px;
+    display: flex;
+
+}
+
+.projectDiv{
+    margin: 10px;
+    padding: 25px;
+    border: solid 2px black;
+    border-radius: 30px;
+    width: clamp(20%, 560px, 31%);
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.projectDiv+div{
+    background-color: aqua;
+}
+
+.projectGrid{
+    margin: 10px 0px;
+    height: 66%;
+    display: flex;
+    flex-direction: column;
+}
+
+.project{
+    background-color: #90ffffb0;
+    border-radius: 29px;
+    padding: 14px;
+    margin: 5px 0px;
+}
+
+
+.iconeAdd{
+    display: flex;
+    justify-content: end;
+}
+.iconeAdd >div{
+    width: 42px;
+    height: 42px;
+    background: url('./add.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+}
+
+.iconeAdd >div:hover{
+    width: 46px;
+    height: 46px;
+}
+
+.tasksDiv{
+    border: solid 1px black;
+    width: 100px;
+    height: 300px;
+}
