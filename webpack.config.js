@@ -21,6 +21,11 @@ module.exports = {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
       },
+      resolve: {
+        alias: {
+            'date-fns/locale$': require.resolve('./date-fns-locales.js')
+        }
+    },
     ],
   },
 };
