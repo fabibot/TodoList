@@ -50,8 +50,11 @@ table {
 
 html{
     font-size: 62.3%;
+    --header-color :  #fffab3de;
+    --second-color : #80aeff;
+    --third-color : #9af6e4;
+    background-color: #9572e769;
 }
-
 
 /* @font-face {
     font-family: "Delicious Handrawn";
@@ -60,7 +63,7 @@ html{
     src: url('./DeliciousHandrawn-Regular.ttf') format('ttf');
   } */
 
-h1, h4{
+h1, h4, p, label, button{
     font-family: 'peanut', sans-serif;
 }  
 
@@ -69,23 +72,38 @@ h1{
     font-weight: 700;
 }
 
-
-h3{
+h3, .addTask{
     font-family: "Delicious Handrawn", cursive;
     font-size: 2.5rem;
 }
 
 h4{
     font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.centered{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 header{
-    background-color: rgba(255, 240, 31, 0.5);
+    background-color: var(--header-color);
     padding: 10px;
     height: 105px;
     display: flex;
     align-items: center;
     box-shadow: 0px -5px 14px black;
+}
+
+.mainIcone{
+    margin: 0px 10px;
+    width: 85px;
+    height: 85px;
+    background: url('./plan.png');
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 #date{
@@ -95,44 +113,53 @@ header{
 .content{
     padding: 30px;
     display: flex;
-
 }
 
 .projectDiv{
-    margin: 10px;
+    margin-right: 20px;
     padding: 25px;
-    border: solid 2px black;
+    border: solid 2px var(--second-color);
     border-radius: 30px;
     width: clamp(20%, 560px, 31%);
-    height: 300px;
+    height: max-content;
     display: flex;
     flex-direction: column;
+    background-color: white;
+    /* box-shadow: 0px 1px 8px var(--second-color); */
 }
 
-.projectDiv+div{
-    background-color: aqua;
-}
 
-.projectGrid{
+.projectList{
     margin: 10px 0px;
-    height: 66%;
+    height: max-content;
     display: flex;
     flex-direction: column;
 }
 
 .project{
-    background-color: #90ffffb0;
+    background-color: var(--second-color);
     border-radius: 29px;
     padding: 14px;
     margin: 5px 0px;
 }
 
+.project > input, input {
+    border-radius: 29px;
+    padding: 3px;
+    border: none;
+}
 
-.iconeAdd{
+
+input{
+    border: solid 1px var(--second-color);
+    margin: 5px;
+}
+
+#iconeAdd{
     display: flex;
     justify-content: end;
 }
-.iconeAdd >div{
+#iconeAdd > div{
     width: 42px;
     height: 42px;
     background: url('./add.png');
@@ -141,13 +168,53 @@ header{
     margin-right: 10px;
 }
 
-.iconeAdd >div:hover{
+#iconeAdd > div:hover{
     width: 46px;
     height: 46px;
 }
 
 .tasksDiv{
-    border: solid 1px black;
-    width: 100px;
-    height: 300px;
+    padding: 10px;
+    display: grid;
+    /* grid-template-columns: repeat(3, 160px); */
+    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-rows: repeat(2, 200px); */
+    gap: 10px;
+    grid-auto-flow: dense;
+}
+
+.task, .addTask{
+    background-color: white;
+    height: 200px;
+    border: solid 2px var(--third-color);
+    border-radius: 15px ;
+    padding: 15px;
+}
+
+.addTask{
+    border-radius: 150px;
+    width: 120px;
+    height: 120px;
+    align-self: center;
+    justify-self: center;
+    font-size: 28px;
+    background: url('./plus.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.addTask:hover{
+    box-shadow: 0px 0px 8px var(--third-color);
+}
+.task > div{
+    display: flex;
+    margin: 0px 0px 10px 0px;
+}
+.checkbox{
+    background: url('./check-box .png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
 }
