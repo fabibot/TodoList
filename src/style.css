@@ -57,15 +57,16 @@ html{
     background-color: #afc8d554;
 }
 
-/* @font-face {
+@font-face {
     font-family: "Delicious Handrawn";
+    src: url('./DeliciousHandrawn-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
-    src: url('./DeliciousHandrawn-Regular.ttf') format('ttf');
-  } */
+}
 
 h1, h4, p, label, button{
     font-family: 'peanut', sans-serif;
+    font-family: 'Gill Sans', sans-serif;
 }  
 
 h1{

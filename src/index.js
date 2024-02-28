@@ -1,10 +1,10 @@
-// import _ from 'lodash';
-// import './style.css';
+import _ from 'lodash';
+import './style.css';
 // import Icon from './icon.png';
 
 
-// const { take } = require("lodash");
-// const { countBy } = require("lodash");
+const { take } = require("lodash");
+const { countBy } = require("lodash");
 
 displayDate();
 
@@ -59,7 +59,7 @@ const projectObj = {
 let task1 = new Task(false, idTask++, "Faire sa valise", "chausette, lunette de soleil, maillot de bain", 1);
 let task2 = new Task(false, idTask++, "PassePort", "Retrait à la poste", 2);
 localStorage.setItem("IdTask", idTask);
-taskList = [task1, task2];
+let taskList = [task1, task2];
 let project1 = new Project(idProject, "voyage Colombie", taskList);
 idProject = updateId();
 projectObj.liste.push(project1);
@@ -287,6 +287,6 @@ function displayDate(){
     const divDate = document.querySelector('#date');
     const month = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre"];
     const week = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
-    dateOfTheDay = week[new Date().getDay()] + " " + new Date().getDate() +  " " + month[new Date().getMonth()];
+    let dateOfTheDay = week[new Date().getDay()] + " " + new Date().getDate() +  " " + month[new Date().getMonth()];
     divDate.textContent = dateOfTheDay;
 }
