@@ -2,18 +2,32 @@
 // import './style.css';
 // import Icon from './icon.png';
 
-// const { take } = require("lodash");
 
+// const { take } = require("lodash");
 // const { countBy } = require("lodash");
 
-let projectList = [];
-let idcount = 0;
+displayDate();
+
+let idcount = localStorage.getItem("idcount");
+let idTask = localStorage.getItem("idTask");
+
+//pour reset les donnée à décom + commenter les deux ligne juste dessus;
+// let idTask = 0;
+// let idcount = 0;
+// localStorage.setItem("idCount", idcount);
+// localStorage.setItem("IdTask", idTask);
+
 let idProject = updateId();
 function updateId(){
-    return 'p' + idcount++;
+    idcount =  localStorage.getItem("idCount");
+    let re = 'p' + idcount++;
+    localStorage.setItem("idCount", idcount);
+    return re;
 }
-let idTask = 0;
+
+let projectList = [];
 let aProjectIsSelected = false;
+let aFormIsOpen = false;
 let currentProjectId = '';
 
 const addProjectButton = document.querySelector("#iconeAdd");
@@ -25,39 +39,59 @@ addTaskButton.addEventListener("click", () => {
     displayFormTask();
 });
 
-
-
 function Project(id, name, tasks){
     this.id = id;
     this.name = name;
     this.tasks = tasks;
 }
-function Task(ischeck, id, name, description, date, importance){
+function Task(ischeck, id, name, description, importance){
     this.ischeck = false;
     this.id = id;
     this.name = name;
     this.description = description;
-    this.date = date;
     this.importance = importance;
 }
+const projectObj = {
+    liste : projectList
+}
 
-
-
-let task1 = new Task(false, idTask++, "Faire sa valise", "chausette, lunette de soleil, maillot de bain", 0, 1);
-let task2 = new Task(false, idTask++, "PassePort", "Retrait à la poste", 0, 2);
+/* Juste là un project initial*/
+let task1 = new Task(false, idTask++, "Faire sa valise", "chausette, lunette de soleil, maillot de bain", 1);
+let task2 = new Task(false, idTask++, "PassePort", "Retrait à la poste", 2);
+localStorage.setItem("IdTask", idTask);
 taskList = [task1, task2];
-
 let project1 = new Project(idProject, "voyage Colombie", taskList);
 idProject = updateId();
-projectList.push(project1);
-const divProject1 = document.querySelector("#p0");
-divProject1.addEventListener("click", () =>{
-    displayTasks(divProject1);
-});
-const recyclingIcone = document.querySelector(".deleteProjectIcone")
-recyclingIcone.addEventListener("click", () =>{
-    deleteElement(divProject1);
-});
+projectObj.liste.push(project1);
+
+//reset data
+// localStorage.clear();
+// const projectObjData = JSON.stringify(projectObj);
+// localStorage.setItem("dataProjectList", projectObjData);
+
+const getProjectList = JSON.parse(localStorage.getItem('dataProjectList'));
+for (let i = 0; i < getProjectList.liste.length; i++){
+    displayProject(getProjectList.liste[i]);
+}
+function displayProject(project){
+    const projectMainDiv = document.querySelector(".projectList");
+    let divProject = document.createElement('div');
+    divProject.classList.add("project");
+    let h4 = document.createElement('h4');
+    h4.textContent = project.name;
+    divProject.appendChild(h4);
+    projectMainDiv.appendChild(divProject);
+    divProject.setAttribute("id", project.id);
+    let recyclingIcone = document.createElement('div');
+    recyclingIcone.classList.add("deleteProjectIcone");
+    divProject.appendChild(recyclingIcone);
+    recyclingIcone.addEventListener("click", () =>{
+        deleteElement(divProject);
+    })
+    divProject.addEventListener("click", () =>{
+        SelectProject(divProject);
+    });
+}
 
 function createProject(){
     const projectMainDiv = document.querySelector(".projectList");
@@ -71,7 +105,10 @@ function createProject(){
             let h4 = document.createElement('h4');
             h4.textContent = input.value;
             let project = new Project(idProject, input.value, []);
-            projectList.push(project);
+            const getProjectList = JSON.parse(localStorage.getItem('dataProjectList'));
+            getProjectList.liste.push(project);
+            const projectObjData = JSON.stringify(getProjectList);
+            localStorage.setItem("dataProjectList", projectObjData);
             divProject.setAttribute("id", idProject);
             idProject = updateId();
             divProject.replaceChild(h4, input);
@@ -82,20 +119,22 @@ function createProject(){
                 deleteElement(divProject);
             })
             divProject.addEventListener("click", () =>{
-                displayTasks(divProject);
+                SelectProject(divProject);
             });
         }
     });
 }
 
 
-function displayTasks(project){
+function SelectProject(project){
+    aFormIsOpen = false;
     let allproject = document.querySelectorAll(".project");
     allproject.forEach((element) => element.style.border = "none");
     project.style.border = "solid 3px black";
     aProjectIsSelected = true;
     let id = project.getAttribute('id');
-    const projectFound = projectList.find((element) => element.id == id);
+    const getProjectList = JSON.parse(localStorage.getItem('dataProjectList'));
+    const projectFound = getProjectList.liste.find((element) => element.id == id);
     currentProjectId = id;
     const tasksMainDiv = document.querySelector('.tasksDiv');
     let oldtask = document.querySelectorAll(".task");
@@ -151,12 +190,11 @@ function createTask(task){
     return taskDiv;
 }
 
-let aFormIsOpen = false;
 function displayFormTask(inputValue){
     if (aProjectIsSelected && !aFormIsOpen){
         const tasksMainDiv = document.querySelector('.tasksDiv');
-        let labels = ["Title", "Description", "Date d'échéance", "importance(1,2 ou3)"];
-        let ids = ['title', 'description', 'date', 'importance']
+        let labels = ["Title", "Description", "importance(1,2 ou3)"];
+        let ids = ['title', 'description', 'importance']
         let form = document.createElement('form');
         form.classList.add('task');
         for (let i = 0; i < labels.length; i++){
@@ -193,27 +231,35 @@ function modifyTask(taskDiv, task){
       }
     const mainDiv = document.querySelector(".tasksDiv")
     mainDiv.removeChild(taskDiv);
+    console.log(inputText);
+    console.log(task);
     displayFormTask(inputText);
 }
 
 function addATask(mainDiv, form, inputValue){
     let title = document.querySelector("#title");
     let description = document.querySelector("#description");
-    let date = document.querySelector("#date");
     let importance = document.querySelector('#importance');
-    let task = new Task(false, idTask++, title.value, description.value, date.value, importance.value);
-    let currentProject = projectList.find((element) => element.id == currentProjectId);
+    let task = new Task(false, idTask++, title.value, description.value, importance.value);
+    localStorage.setItem("IdTask", idTask);
+    const getProjectList = JSON.parse(localStorage.getItem('dataProjectList'));
+    let currentProject = getProjectList.liste.findIndex((element) => element.id == currentProjectId);
+    console.log(currentProject);
+    console.log(getProjectList);
     if(!inputValue){
-        currentProject.tasks.push(task);
+        getProjectList.liste[currentProject].tasks.push(task);
+        const projectObjData = JSON.stringify(getProjectList);
+        localStorage.setItem("dataProjectList", projectObjData);
     } else{
         taskIdToFind = inputValue[1];
-        for (let i = 0; i < currentProject.tasks.length; i++){
-            if( currentProject.tasks[i].id == taskIdToFind){
-                currentProject.tasks[i] = task; 
+        for (let i = 0; i < getProjectList.liste[currentProject].tasks.length; i++){
+            if( getProjectList.liste[currentProject].tasks[i].id == taskIdToFind){
+                getProjectList.liste[currentProject].tasks[i] = task; 
+                const projectObjData = JSON.stringify(getProjectList);
+                localStorage.setItem("dataProjectList", projectObjData);
             }
         }     
     }
-    
     mainDiv.removeChild(form);
     aFormIsOpen = false;
     createTask(task);
@@ -222,13 +268,25 @@ function addATask(mainDiv, form, inputValue){
 function deleteElement(div){
     const projectListDiv = document.querySelector('.projectList');
     IdDiv = div.getAttribute("id");
+    const getProjectList = JSON.parse(localStorage.getItem('dataProjectList'));
+    let indexTodelete = getProjectList.liste.findIndex((element) => element.id == IdDiv);
+    getProjectList.liste.splice(indexTodelete, 1);
+    const projectListData = JSON.stringify(getProjectList);
+    localStorage.setItem("dataProjectList", projectListData);
+
     if(IdDiv == currentProjectId){
         const taskDiv = document.querySelector(".tasksDiv");
         let taskToDelete = document.querySelectorAll(".task");
         taskToDelete.forEach((element) => taskDiv.removeChild(element));
     }
     projectListDiv.removeChild(div); 
-    //cette partie fonctionne mais juste après le task s'affiche à nouveau a cause de displaytask()...
 
 }
 
+function displayDate(){
+    const divDate = document.querySelector('#date');
+    const month = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre"];
+    const week = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
+    dateOfTheDay = week[new Date().getDay()] + " " + new Date().getDate() +  " " + month[new Date().getMonth()];
+    divDate.textContent = dateOfTheDay;
+}

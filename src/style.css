@@ -50,11 +50,11 @@ table {
 
 html{
     font-size: 62.3%;
-    --header-color :  #fffab3de;
+    --header-color :  #3d4fb1;
     --second-color : #80aeff;
     --secondDark-color : #4d86e7;
     --third-color : #9af6e4;
-    background-color: #9572e769;
+    background-color: #afc8d554;
 }
 
 /* @font-face {
@@ -83,13 +83,21 @@ h4{
     font-weight: 800;
 }
 
+p{
+    font-size: 1.3rem;
+}
+
 header{
     background-color: var(--header-color);
     padding: 10px;
     height: 105px;
     display: flex;
     align-items: center;
-    box-shadow: 0px -5px 14px black;
+}
+
+header, .projectDiv, .task{
+    box-shadow: 0px 1px 6px #00000069;
+
 }
 
 .mainIcone{
@@ -120,7 +128,6 @@ header{
     display: flex;
     flex-direction: column;
     background-color: white;
-    /* box-shadow: 0px 1px 8px var(--second-color); */
 }
 
 
