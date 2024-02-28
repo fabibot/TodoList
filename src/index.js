@@ -12,7 +12,9 @@ let idProject = updateId();
 function updateId(){
     return 'p' + idcount++;
 }
+let idTask = 0;
 let aProjectIsSelected = false;
+let currentProjectId = '';
 
 const addProjectButton = document.querySelector("#iconeAdd");
 addProjectButton.addEventListener("click", () =>{
@@ -41,8 +43,8 @@ function Task(ischeck, id, name, description, date, importance){
 
 
 
-let task1 = new Task(false, 'p0', "Faire sa valise", "chausette, lunette de soleil, maillot de bain", 0, 1);
-let task2 = new Task(false, 'p0', "PassePort", "Retrait à la poste", 0, 2);
+let task1 = new Task(false, idTask++, "Faire sa valise", "chausette, lunette de soleil, maillot de bain", 0, 1);
+let task2 = new Task(false, idTask++, "PassePort", "Retrait à la poste", 0, 2);
 taskList = [task1, task2];
 
 let project1 = new Project(idProject, "voyage Colombie", taskList);
@@ -55,7 +57,7 @@ divProject1.addEventListener("click", () =>{
 const recyclingIcone = document.querySelector(".deleteProjectIcone")
 recyclingIcone.addEventListener("click", () =>{
     deleteElement(divProject1);
-})
+});
 
 function createProject(){
     const projectMainDiv = document.querySelector(".projectList");
@@ -86,7 +88,7 @@ function createProject(){
     });
 }
 
-let currentProjectId = '';
+
 function displayTasks(project){
     let allproject = document.querySelectorAll(".project");
     allproject.forEach((element) => element.style.border = "none");
@@ -192,10 +194,6 @@ function modifyTask(taskDiv, task){
     const mainDiv = document.querySelector(".tasksDiv")
     mainDiv.removeChild(taskDiv);
     displayFormTask(inputText);
-    // let currentProject = projectList.find((element) => element.id == currentProjectId);
-    // let rangTask = currentProject.task.find((element) => element == task);
-    // currentProject.tasks[rangTask] = "new taks to add";
-    //supri l'éménet du tableau de table et puis ajouter dans la [i] la nouvelle stage (en fait pas besoin de sup, mais direction écraser l'ancienne valeur avec """="=)
 }
 
 function addATask(mainDiv, form, inputValue){
@@ -203,22 +201,17 @@ function addATask(mainDiv, form, inputValue){
     let description = document.querySelector("#description");
     let date = document.querySelector("#date");
     let importance = document.querySelector('#importance');
-    let task = new Task(false, currentProjectId, title.value, description.value, date.value, importance.value);
+    let task = new Task(false, idTask++, title.value, description.value, date.value, importance.value);
     let currentProject = projectList.find((element) => element.id == currentProjectId);
     if(!inputValue){
         currentProject.tasks.push(task);
     } else{
-        // let taskToModify = currentProject.tasks.find((rang) => tasks[rang] == inputValue);
+        taskIdToFind = inputValue[1];
         for (let i = 0; i < currentProject.tasks.length; i++){
-            console.log(currentProject.tasks[i]);
-            if( currentProject.tasks[i] == task.id){
-                let taskTrouvé = i;
+            if( currentProject.tasks[i].id == taskIdToFind){
+                currentProject.tasks[i] = task; 
             }
-        }
-        // console.log(inputValue);
-        // console.log(taskToModify);
-
-        
+        }     
     }
     
     mainDiv.removeChild(form);
@@ -228,6 +221,14 @@ function addATask(mainDiv, form, inputValue){
 
 function deleteElement(div){
     const projectListDiv = document.querySelector('.projectList');
-    projectListDiv.removeChild(div);    
+    IdDiv = div.getAttribute("id");
+    if(IdDiv == currentProjectId){
+        const taskDiv = document.querySelector(".tasksDiv");
+        let taskToDelete = document.querySelectorAll(".task");
+        taskToDelete.forEach((element) => taskDiv.removeChild(element));
+    }
+    projectListDiv.removeChild(div); 
+    //cette partie fonctionne mais juste après le task s'affiche à nouveau a cause de displaytask()...
+
 }
 
